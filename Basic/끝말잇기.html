@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>끝말잇기</title>
+</head>
+<body>
+    <div><span id="order">1</span>번째 참가자</div>
+    <div>제시어: <span id="word"></span></div>
+    <input type="text">
+    <button>입력</button>
+
+<script>
+    const number = parseInt(prompt('몇 명이 참가하나요?'))
+    console.log("number", number)
+    alert(number)
+    const yesOrNo = confirm('맞나요?')
+
+    // document.querySelector('#order') // document.querySelector('#선택자id') , .(클래스)
+
+    // addEventListener : 이벤트를 달 때 사용하는 메서드
+    document.querySelector('input').addEventListener('input', function (e) {
+        console.log('input: ', e.target.value)
+    })
+    document.querySelector('button').addEventListener('button', function () {
+
+    })
+</script>
+</body>
+</html>
