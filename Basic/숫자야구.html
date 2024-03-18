@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>숫자야구</title>
+</head>
+<body>
+<form id="form">
+  <input type="text" id="input" required minlength="4" maxlength="4" pattern="^(?!.*(.).*\1)\d{4}$">
+  <button>확인</button>
+</form>
+<div id="logs"></div>
+<script>
+  // 숫자를 네 개 뽑는다 -> 답을 제출한다 -> 답이 형식에 맞는지 검사
+  // -> 홈런인지 검사한다 -> 10번 시도했는가? -> 예: 졋다, 아니오: 몇 볼, 몇 스트라이크인지 표시 -> 시도횟수를 1 늘린다
+  // -> 에러를 표시한다
+
+  const $input = document.querySelector('#input')
+  const $form = document.querySelector('#form')
+  const $logs = document.querySelector('#logs')
+
+  const numbers = []; // 1~9 까지 담기
+  for (let n = 1; n <= 9; n +=1) {
+      numbers.push(n);
+  }
+  console.log(numbers)
+
+  const answer = [];
+  for (let n = 0; n < 4; n +=1) {
+      // 0 ~ 8 정수를 index값으로
+      // (9 - n) : 기존배열에서는 값이 삭제되고있고 index = 8 이게되면 numbers[8] = undefined 가 출력되는 에러 발생 방지
+      // 9 -> numbers.length 수정 함으로 전체 길이에서 가져오게 되어있음, - n 불필요해짐
+      const index = Math.floor(Math.random() * numbers.length);
+      answer.push(numbers[index]);
+      numbers.splice(index, 1); // 뽑은 숫자는 기존배열에서 삭제
+  }
+  console.log(answer)
+
+  const tries = [];
+  function  checkInput(input) {
+      if (input.length !== 4) { // 4자리인지 체크
+          return alert('4자리 숫자를 입력해 주세요')
+      }
+      if (new Set(input).size !== 4) { // 중복 입력 체크
+          return alert('중복 되지 않게 입력해 주세요')
+      }
+      if (tries.includes(input)) { // 이미 시도한 값 체크
+          return alert('이미 시도한 값입니다')
+      }
+      return true;
+  }
+
+  $form.addEventListener('submit', (e) => {
+      e.preventDefault(); // 기본 동작 막기 (form 태그의 새로고침 막기)
+      const value = $input.value; // 입력 값 저장
+      $input.value = ''; // 다음 입력 값을 위해 초기화
+      if (!checkInput(value)){
+          return;
+      }
+      if (answer.join('') === value) { // [3, 1, 4, 6] -> '3146'문자열로 변환
+          $logs.textContent = '홈런';
+          return;
+      }
+      if (tries.length >= 9) {
+          const message = document.createTextNode(`패배! 정답은 ${answer.join('')}`);
+          $logs.appendChild(message);
+          return;
+      }
+      // 몇 스트라이크 몇 볼인지 검사
+      let strike = 0;
+      let ball = 0;
+
+      for (let i = 0; i < answer.length; i++) {
+          const index = value.indexOf(answer[i]);
+          if (index > -1) { // 일치하는 숫자가 있으면
+              if (index === i) { // 자릿수도 같음
+                  strike += 1;
+              } else { // 숫자만 같음
+                  ball +=1;
+              }
+          }
+      }
+      $logs.append(`${value}: ${strike} 스트라이크 ${ball} 볼`, document.createElement('br'));
+      tries.push(value);
+  });
+
+</script>
+
+</body>
+</html>

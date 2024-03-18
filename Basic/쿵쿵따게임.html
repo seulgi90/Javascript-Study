@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>쿵쿵따 게임</title>
+</head>
+<body>
+<h2>쿵쿵따 게임</h2>
+<div><span id="order">1</span>번째 참가자</div>
+<div>제시어: <span id="word"></span></div>
+<input type="text">
+<button>입력</button>
+
+<script>
+    // 쿵쿵따 게임 만들기
+    // 입력 할 수 있는 단어를 세글자로 고정
+    // 세 글자가 아니라면 다시 입력 표시
+    // prompt 함수를 사용해 몇 명이 참가할지를 선택할 때 사용자가 취소를 누르면 다음 코드가 실행되지 않도록 처리
+
+
+    const number = window.prompt("몇 명이 참가하나요?")
+    console.log("number = ", number)
+    // prompt에서 취소를 누르면 값이 null, 그 값이 Number 함수에 들어가면 NaN이 된다
+    // NaN이 if문에 들어가면 항상 false로 취급 되므로, number가 null 이면 if문 내부는 실행x
+    if (!number) {
+        const $input = document.querySelector('input')
+
+        let word;
+        let newWord;
+
+        const onClickButton = () => {
+            if (!word || word[word.length - 1] === newWord[0] && newWord.length === 3) { // 제시어가 비어있는가 OR (단어가 올바른가 AND 단어가 세 글자 인가)
+                word = newWord
+                $word.textContent = word;
+                const order = Number($order.textContent) // 현재 순서, 태그.textContent 는 태그 내부의 문자를 가져옴
+                if (order === number) { // 마지막 순번 일 경우 1번째로 되돌아간다
+                    $order.textContent = 1 // 태그 내부의 문자를 해당 값으로 설정
+                } else {
+                    $order.textContent = order + 1
+                }
+            } else {
+                // 올바르지 않은가
+                alert('올바른 단어가 아닙니다')
+            }
+            $input.value = ''; // input, select, textarea 등이 아닌 일반 태그들은 value가 아니라 태그.textContent 속성 사용
+            $input.focus()
+        }
+        const onInput = (e) => {
+            console.log('input: ', e.target.value)
+            newWord = e.target.value
+        }
+        $input.addEventListener('input', onInput)
+    }
+
+</script>
+
+
+</body>
+</html>
