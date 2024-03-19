@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>로또 추첨기</title>
+</head>
+<body>
+<form id="form">
+  <input type="text" name="input">
+  <button>추첨</button>
+</form>
+
+<div id="result">당첨 숫자= </div>
+<div id="bonus">보너스 숫자= </div>
+
+<script>
+    // 45개의 공이 든 통안에서 7개의 공을 뽑는다 ( 1 ~ 45까지, 한 번 뽑은 공은 통에서 빠짐에 유의)
+    // 뽑힌 숫자 6개는 당첨 숫자, 1개는 보너스 숫자
+
+    // 숫자 6개 입력, 로또 추첨기가 돌아가며 7개의 공을 뽑는다, 이 중 하나는 보너스 숫자에 해당하는 공이 된다
+    // -> 입력 받은 숫자를 검증한다 ( 중복 숫자 없는지, 빈 값, 유효 숫자 )
+    // -> 검증 성공 : 당첨 숫자 +  보너스 숫자가 나온다 -> 당첨 숫자 6개: 1등, 5개 + 보너스1 :2등, 5개: 3등, 4개: 4등 , 3개: 5등 -> alert창 등수 표시
+    // -> 검증 실패 : 재입력 요청을 한다
+
+    const $form = document.querySelector('#form')
+    const $result = document.querySelector('#result')
+    const $bonus = document.querySelector('#bonus')
+
+    $form.addEventListener('submit', (e) => {
+        e.preventDefault(); // 새로고침 막음 설정
+
+        // 검사
+        const str = e.target.input.value;
+
+        if (!str.trim()) { // 빈 값 체크
+            return alert('숫자를 입력하세요')
+        }
+
+        const myNumbers = str.split(',').map((v) => parseInt(v.trim())); // 공백이있을 경우 공백을 제거 후 넣는다
+        if (myNumbers.length !== 6) {
+            return alert('숫자를 6개를 입력하세요')
+        }
+        if (new Set(myNumbers).size !== 6) {
+            return alert('중복된 숫자를 입력했습니다')
+        }
+
+        // 통에 들어갈 1 ~ 45 까지의 숫자를 준비
+        const candidate = Array(45).fill().map((v, i) => i + 1);
+        const chosen = [];
+        while (candidate.length) {
+            const random = candidate.splice(Math.floor(Math.random() * candidate.length), 1)[0]; // splice 하게 되면 결과값은 배열에 담김
+            chosen.push(random);
+        }
+        const balls = chosen.slice(0, 6).sort((a, b) => a - b);
+        const bonusBall = chosen[6];
+        console.log(balls, bonusBall)
+
+        function drawBall(number, $result) {
+            const $ball = document.querySelector('div');
+            $ball.className = 'ball';
+            $ball.textContent = number;
+            $result.appendChild($ball);
+        }
+
+        for (let i = 0; i < 6; i++) {
+            setTimeout(() => {
+                drawBall(balls[i], $result);
+            }, 1000 * (i + 1));
+        }
+        setTimeout(() => {
+            drawBall(bonusBall, $bonus);
+        }, 7000);
+
+        // setTimeout(() => {
+        //     const $ball = document.querySelector('div');
+        //     $ball.className = 'ball';
+        //     $ball.textContent = balls[0];
+        //     $result.appendChild($ball);
+        // }, 1000);
+        // setTimeout(() => {
+        //     const $ball = document.querySelector('div');
+        //     $ball.className = 'ball';
+        //     $ball.textContent = balls[1];
+        //     $result.appendChild($ball);
+        // }, 2000);
+        // setTimeout(() => {
+        //     const $ball = document.querySelector('div');
+        //     $ball.className = 'ball';
+        //     $ball.textContent = balls[2];
+        //     $result.appendChild($ball);
+        // }, 3000);
+        // setTimeout(() => {
+        //     const $ball = document.querySelector('div');
+        //     $ball.className = 'ball';
+        //     $ball.textContent = balls[3];
+        //     $result.appendChild($ball);
+        // }, 4000);
+        // setTimeout(() => {
+        //     const $ball = document.querySelector('div');
+        //     $ball.className = 'ball';
+        //     $ball.textContent = balls[4];
+        //     $result.appendChild($ball);
+        // }, 5000);
+        // setTimeout(() => {
+        //     const $ball = document.querySelector('div');
+        //     $ball.className = 'ball';
+        //     $ball.textContent = balls[5];
+        //     $result.appendChild($ball);
+        // }, 6000);
+        // setTimeout(() => {
+        //     const $ball = document.querySelector('div');
+        //     $ball.className = 'ball';
+        //     $bonus.textContent = bonusBall;
+        //     $result.appendChild($ball);
+        // }, 6000);
+    })
+
+</script>
+</body>
+</html>
