@@ -26,6 +26,10 @@
     const $result = document.querySelector('#result')
     const $bonus = document.querySelector('#bonus')
 
+    const setTimeoutPromise = (ms) => new Promise((resolve, reject) => {
+        setTimeout(resolve, ms);
+    })
+
     $form.addEventListener('submit', (e) => {
         e.preventDefault(); // 새로고침 막음 설정
 
@@ -62,7 +66,15 @@
             $result.appendChild($ball);
         }
 
-        for (let i = 0; i < 6; i++) {
+        // for (let i = 0; i < balls.length; i++) {
+        //     await setTimeoutPromise(1000);
+        //     drawBall(balls[i], $result);
+        //
+        // }
+        // await setTimeoutPromise(1000);
+        // drawBall(bonusBall, $bonus);
+
+        for (let i = 0; i < balls.length; i++) {
             setTimeout(() => {
                 drawBall(balls[i], $result);
             }, 1000 * (i + 1));
