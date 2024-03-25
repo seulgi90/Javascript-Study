@@ -24,3 +24,10 @@ console.log('mapResult= ', mapResult) // mapResult=  [ 2, 4, 6, 8 ]
 
 const fillResult = Array(9).fill();
 console.log('fillResult= ', fillResult) // fillResult=  [undefined, undefined,undefined, undefined,undefined, undefined,undefined, undefined,undefined]
+
+
+// reduce
+const numbers2 = [1, 2, 3, 4];
+console.log('numbers reduce==', numbers2.reduce((a, c) => a + c)) // 10,  a: 누적 값
+console.log('numbers reduce==', numbers2.reduce((a, c) => a * c)) // 24
+console.log('numbers reduce==', numbers2.reduce((a, c) => (a * c), 2)) // 48 , 2자리 : 초기값 설정

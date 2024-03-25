@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>틱택토</title>
+  <style>
+    table {
+        border-collapse: collapse;
+    }
+    td {
+        border: 1px solid black;
+        width: 40px;
+        height: 40px;
+        text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+<script>
+  // 2차원 배열
+  let turn = 'O';
+  const data = [];
+  for (let i = 0; i < 3; i++) {
+      data.push([]);
+  }
+  const $table = document.createElement('table');
+  document.body.append($table);
+  for (let i = 0; i< 3; i ++) {
+      const $tr = document.createElement('tr');
+      for (let i = 0; i < 3; i++) {
+          const $td = document.createElement('td');
+          $td.addEventListener('click', (e) => {
+              // 칸에 이미 글자가 있는지 체크
+              if (e.target.textContent) return;
+              e.target.textContent = turn;
+              // 승부 확인
+              if (turn === 'O') {
+                  turn = 'X';
+              } else if (turn === 'X') {
+                  turn = 'O';
+              }
+          } )
+          $tr.appendChild($td);
+      }
+      $table.append($tr);
+  }
+
+</script>
+
+</body>
+</html>
