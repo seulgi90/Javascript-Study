@@ -64,6 +64,57 @@ const enum EDirection {
     Left,
     Right
 }
-const a1 = EDirection.Up
+const a1 = EDirection.Up;
+const a2 = EDirection.Down;
+function walk(dir: EDirection) {}
 
+const ODirection = {
+    Up: 0,
+    Down: 1,
+    Left: 2,
+    Right: 3
+} as const;
 
+type key = keyof typeof ODirection; // initial type:"Down" | "Left" | "Right" | "Up
+type Direction = typeof ODirection[key]; // enum 사용 안 할 경우..
+function  run(dir: Direction) {}
+
+walk(EDirection.Left);
+run(ODirection.Up);
+
+type A = { hello: 'world' } & { seulgi: 'jang'}
+// const and: A = { hello: 'world'} // 에러 -> 모든 속성이 다 있어야한다
+const and: A = { hello: 'world', seulgi: 'jang' };
+
+// type Animal = { breath: true }
+// type Poyouryu = { breed: true }
+// type Human = { think : true }
+
+// 위 3가지 타입을 합치는 방법 : type 사용
+type Animal = { breath: true }
+type Poyouryu = Animal & { breed: true }
+type Human = Poyouryu & { think : true }
+const aaa: Human = { breath: true, breed: true, think: true}
+
+// 위 3가지 타입을 합치는 방법 : interface 사용
+interface Animal1 {
+    breath: true
+}
+interface Poyouryu2 extends Animal1 {
+    breed: true
+}
+interface Human2 extends Poyouryu2 {
+    think : true
+}
+const bbb: Human2 = { breath: true, breed: true, think: true }
+
+// 인터페이스 병합 : 인터페이스는 서로간에 합쳐진다는 예제
+interface M { talk: () => void }
+interface M { eat: () => void }
+interface M { shit: () => void }
+
+const m: M = {
+    talk() {},
+    eat() {},
+    shit() {}
+}
