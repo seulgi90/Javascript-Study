@@ -84,6 +84,7 @@ function run(dir: Direction) {}
 walk(EDirection.Left);
 run(ODirection.Up);
 
+// intersection 타입
 type A = { hello: 'world' } & { seulgi: 'jang' };
 // const and: A = { hello: 'world'} // 에러 -> 모든 속성이 다 있어야한다
 const and: A = { hello: 'world', seulgi: 'jang' };
